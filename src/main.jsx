@@ -6,8 +6,9 @@ import theme from "./styles/theme.js";
 import { createBrowserRouter, RouterProvider } from "react-router";
 import routes from "./routes.jsx";
 
-const router = createBrowserRouter(routes);
-router.basename = "/shopping-cart";
+const router = createBrowserRouter(routes, {
+  basename: "/shopping-cart",
+});
 createRoot(document.getElementById("root")).render(
   <StrictMode>
     <ThemeProvider theme={theme}>
