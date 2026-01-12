@@ -1,8 +1,11 @@
 import styled from "styled-components";
 
 const StyledAlert = styled.div`
+  border-radius: 5px;
+  outline:1px solid #ffc53d;
+  padding: 16px;
   background-color: ${({ theme }) => theme.colors.warning.base};
-  color: ${({ theme }) => theme.colors.text.primary};
+  color: #ffc53d;
 `;
 
 const Alert = ({ message }) => {

@@ -3,6 +3,8 @@ import Header from "./components/organisms/Header/Header";
 import { Outlet } from "react-router";
 import Footer from "./components/organisms/Footer/Footer";
 import { useEffect, useState } from "react";
+import { useReducer } from "react";
+import cartReducer from "./reducer/cartReducer";
 
 const Wrapper = styled.div`
   box-sizing: border-box;
@@ -15,30 +17,24 @@ const Wrapper = styled.div`
 
 function App() {
   const [products, setProducts] = useState([]);
-  const [cart, setCart] = useState(null);
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [cartItems, dispatch] = useReducer(cartReducer, []);
   useEffect(() => {
-    const fetchProducts = () =>
-      fetch("https://fakestoreapi.com/products").then((response) =>
-        response.json()
-      );
-    const fetchCart = () =>
-      fetch("https://fakestoreapi.com/carts/1").then((response) =>
-        response.json()
-      );
-    Promise.all([fetchProducts(), fetchCart()])
-      .then(([dataProducts, dataCart]) => {
-        setProducts(dataProducts);
-        setCart(dataCart);
-      })
+    fetch("https://fakestoreapi.com/products")
+      .then((response) => response.json())
+      .then((data) => setProducts(data))
       .catch((error) => setError(error))
-      .finally(() => setIsLoading(false));
+      .finally(setIsLoading(false));
   }, []);
+
+  if (isLoading) return <div>Loading</div>;
+  if (error) return <div>{error.message}</div>;
+
   return (
     <Wrapper>
-      <Header cart={cart} isLoading={isLoading} />
-      <Outlet context={[products, isLoading, cart, setCart, error]} />
+      <Header cartItemsCount={cartItems.length} />
+      <Outlet context={[products, dispatch, cartItems]} />
       <Footer />
     </Wrapper>
   );

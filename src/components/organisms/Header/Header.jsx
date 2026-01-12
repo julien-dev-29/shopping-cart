@@ -14,17 +14,21 @@ const StyledHeader = styled.header`
   color: ${({ theme }) => theme.colors.text.primary};
 `;
 
-const JRHeader = ({ cart, isLoading }) => {
+const Header = ({ cartItemsCount, isLoading }) => {
   return (
     <StyledHeader>
       <Heading label="My Funky Cart" />
       <Nav>
         <MyNavLink to="/" label={"home"} />
         <MyNavLink to="/shop" label={"shop"} />
-        <BadgedNavLink to="/cart" cart={cart} isLoading={isLoading} />
+        <BadgedNavLink
+          to="/cart"
+          cartItemsCount={cartItemsCount}
+          isLoading={isLoading}
+        />
       </Nav>
     </StyledHeader>
   );
 };
 
-export default JRHeader;
+export default Header;

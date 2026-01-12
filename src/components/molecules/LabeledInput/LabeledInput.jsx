@@ -22,7 +22,7 @@ const Input = styled.input`
 const LabeledInput = ({ handleInputChange, quantity, setQuantity }) => {
   return (
     <Wrapper>
-      <Label>Nombre d'articles</Label>
+      <Label>Qté:</Label>
       <InputWrapper>
         <Input type="number" onChange={handleInputChange} value={quantity} />
         <button onClick={() => setQuantity((prev) => prev + 1)}>+</button>

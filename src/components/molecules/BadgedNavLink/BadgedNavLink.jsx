@@ -9,13 +9,11 @@ const BadgedLinkWrapper = styled.div`
   align-items: center;
 `;
 
-const BadgedNavLink = ({ isLoading, cart, to }) => {
+const BadgedNavLink = ({ isLoading, cartItemsCount, to }) => {
   return (
     <BadgedLinkWrapper>
       <MyNavLink to={to} label={"cart"} />
-      {!isLoading && cart.products.length > 0 && (
-        <Badge label={cart.products.length} />
-      )}
+      {!isLoading && cartItemsCount > 0 && <Badge label={cartItemsCount} />}
     </BadgedLinkWrapper>
   );
 };

@@ -41,8 +41,8 @@ const theme = {
       tone: "#3C3F50"
     },
     info: { base: "#8BE9FD" },
-    warning: { base: "#F1FA8C" },
-    error: { base: "#1D232A" },
+    warning: { base: "#302008" },
+    error: { base: "#E5484D" },
     success: { base: "#51FA7B" },
     backgrounds: {
       base: "#232530",        /* couleur de base */

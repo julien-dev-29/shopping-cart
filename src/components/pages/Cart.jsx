@@ -1,75 +1,72 @@
-import { useOutletContext } from "react-router";
+import Button from "../atoms/Button/Button";
+import { Trash2 } from "lucide-react";
 import styled from "styled-components";
+import { useOutletContext } from "react-router";
+
 const Wrapper = styled.div`
   padding: 32px;
   color: ${({ theme }) => theme.colors.text.primary};
 `;
+
 const ListItem = styled.li`
   margin-bottom: 8px;
 `;
+
+/**
+ *
+ * @returns
+ */
 const Cart = () => {
-  const [products, isLoading, cart, setCart, error] = useOutletContext();
-
-  /**
-   *
-   * @param {Number} productId
-   */
-  function handleDelete(productId) {
-    const updatedProducts = cart.products.filter(
-      (p) => p.productId !== productId
-    );
-    setCart({ ...cart, products: updatedProducts });
+  const [products, dispatch, cartItems] = useOutletContext();
+  function handleDelete(id) {
+    dispatch({
+      type: "deleted",
+      id: id,
+    });
   }
-
-  /**
-   *
-   * @param {Number} productId
-   * @param {Number} newQuantity
-   */
-  function updateCart(productId, newQuantity) {
-    if (newQuantity <= 0) {
-      handleDelete(productId);
-    } else {
-      const updatedProducts = cart.products.map((p) =>
-        p.productId === productId ? { ...p, quantity: newQuantity } : p
-      );
-      setCart({ ...cart, products: updatedProducts });
+  function handleUpdate(id, quantity) {
+    if (quantity <= 0) {
+      dispatch({
+        type: "deleted",
+        id: id,
+      });
     }
+    dispatch({
+      type: "updated",
+      id: id,
+      quantity: quantity,
+    });
   }
-
-  if (isLoading) return <Wrapper>Chargement...</Wrapper>;
-  if (error) return <Wrapper>Erreur : {error.message}</Wrapper>;
-  if (!cart) return <Wrapper>Aucun panier disponible.</Wrapper>;
-
   return (
     <Wrapper>
       <h1>Mon Panier</h1>
-      <p>Date : {new Date(cart.date).toLocaleDateString("fr-FR")}</p>
-      {cart.products.length > 0 && <h2>Produits :</h2>}
+      {cartItems.length > 0 && <h2>Produits :</h2>}
       <ul>
-        {cart.products.map((cartProduct) => {
-          const product = products.find((p) => p.id === cartProduct.productId);
-          if (!product) return null;
+        {cartItems.map((cartItem) => {
+          const item = products.find((p) => p.id === cartItem.id);
+          if (!item) return null;
           return (
-            <ListItem key={product.id}>
+            <ListItem key={item.id}>
               <h3>
-                {product.title}{" "}
-                <button onClick={() => handleDelete(product.id)}>Delete</button>
+                {item.title}{" "}
+                <Button handleClick={() => handleDelete(item.id)} type="error">
+                  <Trash2 />
+                </Button>
               </h3>
-              <h4>Quantité: {cartProduct.quantity}</h4>
-              <img src={product.image} alt={product.title} height={100} />
+              <h4>Quantité: {cartItem.quantity}</h4>
+              <img src={item.image} alt={item.title} height={100} />
               <p>
-                {product.price * cartProduct.quantity}€
+                {item.price * cartItem.quantity}€
                 <button
                   onClick={() =>
-                    updateCart(cartProduct.productId, cartProduct.quantity + 1)
+                    handleUpdate(cartItem.id, cartItem.quantity + 1)
                   }
                 >
                   +
                 </button>
                 <button
                   onClick={() =>
-                    updateCart(cartProduct.productId, cartProduct.quantity - 1)
+                    handleUpdate(cartItem.id, cartItem.quantity - 1)
                   }
                 >
                   -

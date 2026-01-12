@@ -1,23 +1,31 @@
 import styled from "styled-components";
-
 const StyledButton = styled.button`
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
   border: none;
-  border-radius: 4px;
+  border-radius: ${({type}) => type  === "error" ? "16px" : "4px"};
   padding: 8px 16px;
-  background-color: ${({ theme }) => theme.colors.primary.base};
+  background-color: ${({ theme, type }) =>
+    type === "error" ? theme.colors.error.base : theme.colors.primary.base};
   color: white;
   transition: background-color 0.1s, transform 0.1s;
   &:hover {
-    background-color: ${({ theme }) => theme.colors.primary.hover};
+    filter: brightness(85%);
   }
   &:active {
-    background-color: ${({ theme }) => theme.colors.primary.active};
+    filter: brightness(100%);
     transform: translateY(0.5px);
   }
 `;
 
-const Button = ({ label, handleClick }) => {
-  return <StyledButton onClick={handleClick}>{label}</StyledButton>;
+const Button = ({ children, type, handleClick }) => {
+  return (
+    <StyledButton onClick={handleClick} type={type}>
+      {children}
+    </StyledButton>
+  );
 };
 
 export default Button;

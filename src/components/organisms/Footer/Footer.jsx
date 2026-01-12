@@ -9,7 +9,9 @@ const StyledFooter = styled.footer`
 `;
 
 const Footer = () => {
-  return <StyledFooter>Footer</StyledFooter>;
+  return <StyledFooter>
+    <span>© 2025 - @JuR0ll All rights reserved</span>
+  </StyledFooter>;
 };
 
 export default Footer;
